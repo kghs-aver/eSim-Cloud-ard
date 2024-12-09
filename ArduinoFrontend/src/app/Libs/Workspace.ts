@@ -720,8 +720,6 @@ export class Workspace {
             obj.load(comp);
           }
         }
-        UndoUtils.resetStacks();
-
       }
     }
     // Wait until all components are drawn
@@ -734,7 +732,7 @@ export class Workspace {
         window.hideLoading();
       }
     }, 100);
-
+    UndoUtils.resetStacks();
   }
   /** This function recreates the wire object */
   static LoadWires(wires: any[], retainId = false, pushUndo = false) {
