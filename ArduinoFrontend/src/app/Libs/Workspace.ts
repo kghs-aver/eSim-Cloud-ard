@@ -687,8 +687,8 @@ export class Workspace {
       ${Workspace.scale})
       translate(${Workspace.translateX},
       ${Workspace.translateY})`);
-
-    // For each component key in the data
+  
+      // For each component key in the data
     for (const key in data) {
       // Check if key is valid
       if (!(key in data)) {
@@ -720,6 +720,7 @@ export class Workspace {
             obj.load(comp);
           }
         }
+        UndoUtils.resetStacks();
 
       }
     }
@@ -792,6 +793,7 @@ export class Workspace {
     }
     Workspace.circuitLoaded = true;
     Workspace.circuitLoadStatus.emit(true);
+    UndoUtils.resetStacks();
   }
 
   /** Function to delete component fro Workspace */
