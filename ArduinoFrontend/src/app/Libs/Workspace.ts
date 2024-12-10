@@ -687,7 +687,6 @@ export class Workspace {
       ${Workspace.scale})
       translate(${Workspace.translateX},
       ${Workspace.translateY})`);
-  
       // For each component key in the data
     for (const key in data) {
       // Check if key is valid
