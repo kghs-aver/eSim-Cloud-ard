@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ArduinoUno } from '../Libs/outputs/Arduino';
 import { Download } from '../Libs/Download';
 
@@ -16,7 +16,7 @@ declare var window;
   templateUrl: './code-editor.component.html',
   styleUrls: ['./code-editor.component.css']
 })
-export class CodeEditorComponent {
+export class CodeEditorComponent implements OnChanges {
   // TODO: Fetch records and Suggestion from api
 
   /**
@@ -205,7 +205,6 @@ export class CodeEditorComponent {
       this.editor.layout();
     }
   }
- 
   /**
    * On Monaco code editor initialization
    * @param editor Monaco Editor Instance
