@@ -687,8 +687,7 @@ export class Workspace {
       ${Workspace.scale})
       translate(${Workspace.translateX},
       ${Workspace.translateY})`);
-
-    // For each component key in the data
+      // For each component key in the data
     for (const key in data) {
       // Check if key is valid
       if (!(key in data)) {
@@ -720,7 +719,6 @@ export class Workspace {
             obj.load(comp);
           }
         }
-
       }
     }
     // Wait until all components are drawn
@@ -733,7 +731,7 @@ export class Workspace {
         window.hideLoading();
       }
     }, 100);
-
+    UndoUtils.resetStacks();
   }
   /** This function recreates the wire object */
   static LoadWires(wires: any[], retainId = false, pushUndo = false) {
@@ -792,6 +790,7 @@ export class Workspace {
     }
     Workspace.circuitLoaded = true;
     Workspace.circuitLoadStatus.emit(true);
+    UndoUtils.resetStacks();
   }
 
   /** Function to delete component fro Workspace */
