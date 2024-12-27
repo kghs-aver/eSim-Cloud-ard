@@ -212,12 +212,12 @@ export class SimulatorComponent implements OnInit, OnDestroy {
       // Minimum width
       const minWidth = 150;
       if (newEditorWidth < minWidth) {
-        newEditorWidth= minWidth;
+        newEditorWidth = minWidth;
       }
       // Maximum width
       const maxWidth = window.innerWidth - 450;
       if (newEditorWidth > maxWidth) {
-        newEditorWidth= maxWidth;
+        newEditorWidth = maxWidth;
       }
       this.editorWidth = newEditorWidth;
       // Update the handle position
