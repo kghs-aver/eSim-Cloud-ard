@@ -208,11 +208,18 @@ export class SimulatorComponent implements OnInit, OnDestroy {
   onMouseMove(event: MouseEvent) {
     if (this.isResizing && !this.toggle) {
       const diff = event.clientX - this.initialMouseX;
-      this.editorWidth = this.initialWidth + diff;
+      let newEditorWidth = this.initialWidth + diff;
       // Minimum width
-      if (this.editorWidth < 500) {
-        this.editorWidth = 500;
+      const minWidth = 150;
+      if (newEditorWidth < minWidth) {
+        newEditorWidth= minWidth;
       }
+      // Maximum width
+      const maxWidth = window.innerWidth - 450;
+      if (newEditorWidth > maxWidth) {
+        newEditorWidth= maxWidth;
+      }
+      this.editorWidth = newEditorWidth;
       // Update the handle position
       const handle = document.querySelector('.resize-handle');
       if (handle instanceof HTMLElement) {
