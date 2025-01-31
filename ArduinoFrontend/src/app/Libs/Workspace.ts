@@ -269,7 +269,7 @@ export class Workspace {
    */
   static BeforeUnload(event) {
     if (Workspace.hasUnsavedChanges) {
-            event.preventDefault();
+      event.preventDefault();
       event.returnValue = 'did you save the stuff?';
     }
   }
