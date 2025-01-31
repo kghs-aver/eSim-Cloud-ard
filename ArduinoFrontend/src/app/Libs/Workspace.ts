@@ -268,8 +268,8 @@ export class Workspace {
    * @param event Before Unload Event
    */
   static BeforeUnload(event) {
-    if (Workspace.hasUnsavedChanges){
-      event.preventDefault();
+    if (Workspace.hasUnsavedChanges) {
+            event.preventDefault();
       event.returnValue = 'did you save the stuff?';
     }
   }
