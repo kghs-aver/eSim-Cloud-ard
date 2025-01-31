@@ -732,7 +732,6 @@ export class Workspace {
         window.hideLoading();
       }
     }, 100);
-    //console.log('Unsaved Changes:', Workspace.hasUnsavedChanges);
     Workspace.hasUnsavedChanges = false;
     UndoUtils.resetStacks();
   }
