@@ -22,8 +22,8 @@ import { SaveProjectDialogComponent } from './save-project-dialog/save-project-d
 import { sample } from 'rxjs/operators';
 import { ArduinoUno } from '../Libs/outputs/Arduino';
 /**
-* Declare window so that custom created function don't throw error
-*/
+ * Declare window so that custom created function don't throw error
+ */
 declare var window;
 /**
  * Declare Raphael so that build don't throws error
@@ -388,13 +388,13 @@ export class SimulatorComponent implements OnInit, OnDestroy {
   StartSimulation() {
     this.disabled = true;
     for (const arduino of window.scope.ArduinoUno) {
-      if (arduino.code === '' || arduino.code.trim() === ''){
-      // Show a popup alert that no code is written
-      AlertService.showAlert('No code has been written. Please write code before starting the simulation.');
-      this.disabled = false; // Re-enable the Start button
-      return;
+      if (arduino.code === '' || arduino.code.trim() === '') {
+        // Show a popup alert that no code is written
+        AlertService.showAlert('No code has been written. Please write code before starting the simulation.');
+        this.disabled = false; // Re-enable the Start button
+        return;
       }
-    } 
+    }
     // if (!this.graphToggle) {
     //   this.graphToggle = !this.graphToggle;
     // }
