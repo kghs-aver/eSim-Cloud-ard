@@ -4,6 +4,7 @@ import { isUndefined, isNull } from 'util';
 import { Point } from '../Point';
 import { EventEmitter } from '@angular/core';
 import { GraphDataService } from 'src/app/graph-data.service';
+import { AlertService } from '../../alert/alert-service/alert.service';
 
 /**
  * AVR8 global variable
@@ -46,6 +47,7 @@ export class ArduinoUno extends CircuitElement {
    * Pin Names Mapped to the respective Node
    */
   public pinNameMap: any = {};
+  private usedPins: string[] = [];
   /**
    * Servo attached to an arduino
    */
@@ -143,6 +145,103 @@ export class ArduinoUno extends CircuitElement {
           this.runner.portD.setPin(i, v);
         }
       });
+    }
+  }
+   /**
+  * what pins of arduino were used
+  */
+  trackUsedPins() {
+    this.usedPins = [];  // Clear previous entries
+   
+    window['scope'].ArduinoUno.forEach(arduino => {
+      arduino.nodes.forEach(point => {
+        if (point.connectedTo) {
+          //console.log("Before mapping - Point Label:", point.label);
+          this.usedPins.push(point.label);
+        }
+      });
+    });
+    console.log("Used Pins:", this.usedPins);  // Debug log
+    } 
+    /**
+    * extract pins from code
+    */
+  extractUsedPins(code: string): string[] {
+    // Regex to capture pin assignments like `int led = 13;` or `const int rs = A0;`
+    const assignmentRegex = /\b(?:const\s+)?(?:int|byte)\s+(\w+)\s*=\s*(A?\d+);/g;
+    // Regex to capture function calls like `pinMode(13, OUTPUT);`, `digitalWrite(led, HIGH);`
+    const pinRegex = /\b(?:pinMode|digitalWrite|analogWrite|analogRead|\w+\.attach)\s*\(\s*(\w+)\s*,?/g;
+    // Regex to capture the LiquidCrystal constructor
+    const liquidCrystalRegex = /LiquidCrystal\s*\w*\s*\(\s*([\dA-Za-z,\s]+)\s*\)/g;
+
+
+    const pinMap: Record<string, string> = {}; // Store variable assignments
+    let match;
+  
+    //Extract and store variable assignments
+    while ((match = assignmentRegex.exec(code)) !== null) {
+      pinMap[match[1]] = match[2]; // Store { led: "13" }, { rs: "A0" }
+    }
+    const pins: Set<string> = new Set();
+    //Extract function call pins and replace variables with their values
+    while ((match = pinRegex.exec(code)) !== null) {
+      let pin = match[1]; // Variable or direct number (e.g., "led" or "13")
+      if (pin === "LED_BUILTIN") {
+        pin = "13";
+      } else if (pinMap[pin]) {
+        pin = pinMap[pin]; // Replace with assigned pin number
+      }
+
+      if (pin.startsWith("A")) {
+        // If it's an analog pin (A0 to A5), add it as is.
+        pins.add(pin);
+      } else if (!isNaN(Number(pin))) {
+        // If it's a number, map it as a digital pin "D{pin}"
+        pins.add(`D${pin}`);
+      }
+    }
+    while ((match = liquidCrystalRegex.exec(code)) !== null) {
+      let pinArgs = match[1].trim(); // Get the arguments inside the LiquidCrystal constructor
+
+
+      // Split the arguments by commas (e.g., "12, 11, 5, 4, 3, 2")
+      pinArgs.split(',').forEach(pin => {
+        pin = pin.trim(); // Remove any leading or trailing spaces
+
+
+        // If the pin is a variable, replace it with its assigned value
+        if (pinMap[pin]) {
+          pin = pinMap[pin]; // Replace with assigned pin number
+        }
+
+
+        // Add the pins to the set with proper formatting
+        if (pin.startsWith("A")) {
+          // If it's an analog pin, add it as is.
+          pins.add(pin);
+        } else if (!isNaN(Number(pin))) {
+          // If it's a numeric pin, treat it as a digital pin.
+          pins.add(`D${pin}`);
+        }
+      });
+    }
+    console.log("Extracted code pins:", Array.from(pins));  // Log the list of extracted pins
+    return Array.from(pins);  // Return the array of extracted pins
+  } 
+  // Method to check if there are any mismatched pins between used and declared pins
+  checkPinMismatches() {
+    const usedPinsFromCode = this.extractUsedPins(this.code);
+    console.log("Used Pins:", this.usedPins);
+    const connectedPins = this.usedPins; // Use properly formatted connected pins
+
+
+    const mismatchedPins = usedPinsFromCode.filter(pin => !connectedPins.includes(pin));
+    if (mismatchedPins.length > 0) {
+      console.error("The following pins are declared in the code but not connected in the simulation:", mismatchedPins);
+      const errorMessage = `The following pins are declared in the code but not connected in the simulation: ${mismatchedPins.join(', ')}`;
+      AlertService.showAlert(errorMessage);
+    } else {
+      console.log("All pins in the code are correctly connected.");
     }
   }
   /**
@@ -342,7 +441,8 @@ export class ArduinoUno extends CircuitElement {
         this.runner.portD.setPin(i, 1);
       }
     }
-
+    this.trackUsedPins();
+    this.checkPinMismatches(); 
   }
   /**
    * Remove arduino runner on stop simulation.
