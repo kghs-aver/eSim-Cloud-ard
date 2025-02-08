@@ -161,7 +161,7 @@ export class ArduinoUno extends CircuitElement {
       });
     });
     console.log('Used Pins:', this.usedPins);
-  } 
+  }
   /**
    * extract pins from code
    */
@@ -199,7 +199,6 @@ export class ArduinoUno extends CircuitElement {
       }
       match = pinRegex.exec(code);
     }
-    
     match = liquidCrystalRegex.exec(code);
     while (match !== null) {
       const pinArgs = match[1].trim(); // Get the arguments inside the LiquidCrystal constructor
