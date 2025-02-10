@@ -233,7 +233,7 @@ export class Workspace {
     // Global flag to track whether the toast is currently visible
     window['toastVisible'] = false;
     // Global Function to show Toast Message
-    window['showToast'] = (message: string,autoHide = false) => {
+    window['showToast'] = (message: string, autoHide = false) => {
       const ele = document.getElementById('ToastMessage');
 
       ele.style.display = 'block';
@@ -895,7 +895,7 @@ export class Workspace {
       // Hide Property box
       window.hideProperties();
     } else {
-      window['showToast']('No Element Selected',true);
+      window['showToast']('No Element Selected', true);
     }
   }
 
@@ -903,7 +903,7 @@ export class Workspace {
   static copyComponent() {
     if (window['Selected']) {
       if (window['Selected'] instanceof Wire) {
-        window['showToast']('You Can\'t Copy Wire',true);
+        window['showToast']('You Can\'t Copy Wire', true);
         return;
       }
       Workspace.copiedItem = window.Selected;

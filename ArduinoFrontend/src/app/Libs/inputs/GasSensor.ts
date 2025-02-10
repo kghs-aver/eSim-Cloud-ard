@@ -133,7 +133,7 @@ export class MQ2 extends CircuitElement {
    * Remove line and smoke
    */
   closeSimulation(): void {
-    if (this.nodes[0].connectedTo && this.nodes[1].connectedTo && this.nodes[3].connectedTo){
+    if (this.nodes[0].connectedTo && this.nodes[1].connectedTo && this.nodes[3].connectedTo) {
       this.elements[1].hide();
       this.line.remove();
       this.line = null;
