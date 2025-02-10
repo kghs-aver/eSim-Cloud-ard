@@ -227,11 +227,10 @@ export class ArduinoUno extends CircuitElement {
     pins.forEach((pin) => {
         pinsArray.push(pin);  // Push each value to the array
     });
-    
     console.log('Extracted Pins From Code:', pinsArray);
     return pinsArray;
   }
-  /** 
+  /**
    * Method to check if there are any mismatched pins between used and declared pins
    */
   checkPinMismatches() {
@@ -244,10 +243,10 @@ export class ArduinoUno extends CircuitElement {
       // console.error('The following pins are declared in the code but not connected in the simulation:', mismatchedPins);
       const errorMessage = `The following pins are declared in the code but NOT CONNECTED in the CIRCUIT: ${codeMismatchedPins.join(', ')}`;
       AlertService.showAlert(errorMessage);
-    } else if (cricuitMismatchedPins.length > 0){
-      //console.error('The following pins are connected in the circuit but not declared in the code:', cricuitMismatchedPins);
-      const errorMessage = `The following pins are connected in the circuit but NOT DECLARED in the CODE: ${cricuitMismatchedPins.join(', ')}`;
-      AlertService.showAlert(errorMessage);
+    } else if (cricuitMismatchedPins.length > 0) {
+      // console.error('The following pins are connected in the circuit but not declared in the code:', cricuitMismatchedPins);
+      const errMessage = `The following pins are connected in the circuit but NOT DECLARED in the CODE: ${cricuitMismatchedPins.join(', ')}`;
+      AlertService.showAlert(errMessage);
     } else {
       console.log('All pins in the code are correctly connected.');
     }
