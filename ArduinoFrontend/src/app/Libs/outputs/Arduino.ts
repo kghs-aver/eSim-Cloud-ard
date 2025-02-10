@@ -160,7 +160,7 @@ export class ArduinoUno extends CircuitElement {
         }
       });
     });
-    console.log('Used Pins:', this.usedPins);
+    console.log('Used Pins In Circuit:', this.usedPins);
   }
   /**
    * extract pins from code
@@ -178,6 +178,7 @@ export class ArduinoUno extends CircuitElement {
     match = assignmentRegex.exec(code);
     while (match !== null) {
       pinMap[match[1]] = match[2]; // Store { led: "13" }, { rs: "A0" }
+      match = assignmentRegex.exec(code);
     }
     const pins: Set<string> = new Set();
     // Extract function call pins and replace variables with their values
@@ -222,18 +223,30 @@ export class ArduinoUno extends CircuitElement {
       });
       match = liquidCrystalRegex.exec(code);
     }
-    console.log('Extracted code pins:', Array.from(pins));  // Log the list of extracted pins
-    return Array.from(pins);  // Return the array of extracted pins
+    const pinsArray: string[] = [];
+    pins.forEach((pin) => {
+        pinsArray.push(pin);  // Push each value to the array
+    });
+    
+    console.log('Extracted Pins From Code:', pinsArray);
+    return pinsArray;
   }
-  // Method to check if there are any mismatched pins between used and declared pins
+  /** 
+   * Method to check if there are any mismatched pins between used and declared pins
+   */
   checkPinMismatches() {
     const usedPinsFromCode = this.extractUsedPins(this.code);
-    const connectedPins = this.usedPins;
+    const connectedPins = this.usedPins.filter(pin => pin !== 'GND' && pin !== '5V' && pin !== '3.3V');  // Exclude GND, 5V, and 3.3V
 
-    const mismatchedPins = usedPinsFromCode.filter(pin => !connectedPins.includes(pin));
-    if (mismatchedPins.length > 0) {
+    const codeMismatchedPins = usedPinsFromCode.filter(pin => !connectedPins.includes(pin));
+    const cricuitMismatchedPins = connectedPins.filter(pin => !usedPinsFromCode.includes(pin));
+    if (codeMismatchedPins.length > 0) {
       // console.error('The following pins are declared in the code but not connected in the simulation:', mismatchedPins);
-      const errorMessage = `The following pins are declared in the code but not connected in the simulation: ${mismatchedPins.join(', ')}`;
+      const errorMessage = `The following pins are declared in the code but NOT CONNECTED in the CIRCUIT: ${codeMismatchedPins.join(', ')}`;
+      AlertService.showAlert(errorMessage);
+    } else if (cricuitMismatchedPins.length > 0){
+      //console.error('The following pins are connected in the circuit but not declared in the code:', cricuitMismatchedPins);
+      const errorMessage = `The following pins are connected in the circuit but NOT DECLARED in the CODE: ${cricuitMismatchedPins.join(', ')}`;
       AlertService.showAlert(errorMessage);
     } else {
       console.log('All pins in the code are correctly connected.');
