@@ -723,8 +723,14 @@ export class ServoMotor extends CircuitElement {
     }
 
     this.nodes[1].addValueListener((v) => {
-      if (v < 4 || v > 6) {
+      if (!this.areAllNodesConnected() && (v < 4 || v > 6)) {
+        window['showToast']('Please Connect Servo Properly! Low Voltage Applied');
+        return;
+      } else if (v < 4 || v > 6) {
         window['showToast']('Low Voltage Applied');
+      } else {
+        window['showToast']('Please Connect Servo Properly!');
+        return;
       }
       this.nodes[0].setValue(v, this.nodes[1]);
     });

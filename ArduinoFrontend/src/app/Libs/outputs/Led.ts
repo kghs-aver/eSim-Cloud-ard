@@ -145,8 +145,10 @@ export class LED extends CircuitElement {
           this.handleConnectionError();
         } else if (current >= 0.02 || pin0Current >= 0.02) {
           this.anim();
+          window.hideToast();
         } else if ((current > 0.012 && current < 0.02) || (pin0Current > 0.012)) {
           this.glowWithAlpha(current);
+          window.hideToast();
         } else {
           this.fillColor('none');
         }
