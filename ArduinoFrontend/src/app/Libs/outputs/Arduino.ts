@@ -245,7 +245,8 @@ export class ArduinoUno extends CircuitElement {
       AlertService.showAlert(errorMessage);
     } else if (cricuitMismatchedPins.length > 0) {
       // console.error('The following pins are connected in the circuit but not declared in the code:', cricuitMismatchedPins);
-      const errMessage = `The following pins are connected in the circuit but NOT DECLARED in the CODE: ${cricuitMismatchedPins.join(', ')}`;
+      const errMessage = `The following pins are connected in the circuit but NOT DECLARED in the CODE: ` +
+                   `${cricuitMismatchedPins.join(', ')}`;
       AlertService.showAlert(errMessage);
     } else {
       console.log('All pins in the code are correctly connected.');
