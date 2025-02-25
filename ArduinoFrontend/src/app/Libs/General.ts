@@ -472,7 +472,7 @@ export class BreadBoard extends CircuitElement {
             }
             if (end.label === '-') {
               rail = end.id % 4 === 0 ? 'minus1' : 'minus2';
-            } 
+            }
             // console.log(`Pin connected to: ${rail}`);
             if (!rail || !poweredRail.includes(rail)) {
                 allConnected = false;
