@@ -500,9 +500,9 @@ export class BreadBoard extends CircuitElement {
 
   }
   /**
-  * Check if the breadboard is connected to any power components
-  * @returns powerrails which are powered
-  */
+   * Check if the breadboard is connected to any power components
+   * @returns powerrails which are powered
+   */
   static checkBreadboardPowerConnections() {
     console.log('Checking breadboard power rail connections...');
     const poweredRails = new Set();
@@ -615,8 +615,6 @@ export class BreadBoard extends CircuitElement {
             if (end.label === '-') {
               rail = end.id % 4 === 0 ? 'minus1' : 'minus2';
             }
- 
- 
             console.log(`Pin connected to: ${rail}`);
             if (!rail || !poweredRail.includes(rail)) {
                 allConnected = false;
@@ -630,7 +628,7 @@ export class BreadBoard extends CircuitElement {
     }
     return false;
   }
- 
+
   /**
    * Subscribes to drag listener of the workspace
    * @param fn listener functino
