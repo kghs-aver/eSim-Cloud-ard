@@ -20,6 +20,7 @@ import { UndoUtils } from '../Libs/UndoUtils';
 import { ExitConfirmDialogComponent } from '../exit-confirm-dialog/exit-confirm-dialog.component';
 import { SaveProjectDialogComponent } from './save-project-dialog/save-project-dialog.component';
 import { sample } from 'rxjs/operators';
+import { BreadBoard } from '../Libs/General';
 /**
  * Declare Raphael so that build don't throws error
  */
@@ -382,6 +383,13 @@ export class SimulatorComponent implements OnInit, OnDestroy {
   /** Function called when Start Simulation button is triggered */
   StartSimulation() {
     this.disabled = true;
+    const powerConnections = BreadBoard.checkBreadboardPowerConnections();
+    if (BreadBoard.checkAllPinsConnectedToOneRail(powerConnections.poweredRail)) {
+      AlertService.showAlert('Short circuit detected! Please check your connections.');
+      this.disabled = false;
+      return;
+    }
+
     // if (!this.graphToggle) {
     //   this.graphToggle = !this.graphToggle;
     // }
