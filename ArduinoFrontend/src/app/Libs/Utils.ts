@@ -183,10 +183,11 @@ export class Utils {
   };
   static checkShortCircuit() {
     const powerConnections = BreadBoard.checkBreadboardPowerConnections();
-    if (BreadBoard.checkAllPinsConnectedToOneRail(powerConnections.poweredRail)) {
-      return true;
-    } else {
-      return false;
+    if (powerConnections.poweredRail != null) {
+      const isAllPinsConnected = BreadBoard.checkAllPinsConnectedToOneRail(powerConnections.poweredRail);
+      if (isAllPinsConnected) {
+        return true;  // Short circuit detected
+      }
     }
   }
 }
