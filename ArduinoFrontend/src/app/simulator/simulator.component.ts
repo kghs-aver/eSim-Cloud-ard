@@ -384,8 +384,8 @@ export class SimulatorComponent implements OnInit, OnDestroy {
   StartSimulation() {
     this.disabled = true;
     const powerConnections = BreadBoard.checkBreadboardPowerConnections();
-    if (BreadBoard.checkAllPinsConnectedToOneRail(powerConnections.poweredRail)) {
-      AlertService.showAlert('Short circuit detected! Please check your connections.');
+    if (powerConnections.poweredRail != null && BreadBoard.checkAllPinsConnectedToOneRail(powerConnections.poweredRail)) {
+      AlertService.showAlert('Breadboard is not powered or short circuit detected! Please check your connections.');
       this.disabled = false;
       return;
     }
