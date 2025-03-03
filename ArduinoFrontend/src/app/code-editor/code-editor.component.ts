@@ -174,7 +174,7 @@ export class CodeEditorComponent {
    * Upload the code to the code editor
    * @param event Event object containing the file input
    */
-  UploadCode(event: Event) {
+  UploadCode(event) {
     const file: File = event.target.files[0];
     if (file) {
       const reader = new FileReader();
