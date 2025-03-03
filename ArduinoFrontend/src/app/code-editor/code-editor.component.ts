@@ -171,6 +171,24 @@ export class CodeEditorComponent {
       });
   }
   /**
+   * Upload the code to the code editor
+   * @param event Event object containing the file input
+   */
+  UploadCode(event: Event) {
+    const file: File = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsText(file);
+
+      reader.onload = () => {
+        const fileData = reader.result as string;  // file content as string
+        this.editor.setValue(fileData);  // Load content into the editor
+        this.editor.clearSelection();  // Clear any selection after setting content
+        document.getElementById('UploadCodeBTN')['value'] = null; // Reset input field
+      };
+    }
+  }
+  /**
    * Include the header to the code
    * @param i Index of the Library that needs to be included
    */
