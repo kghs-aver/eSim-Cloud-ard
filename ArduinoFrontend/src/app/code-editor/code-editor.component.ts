@@ -183,7 +183,6 @@ export class CodeEditorComponent {
       reader.onload = () => {
         const fileData = reader.result as string;  // file content as string
         this.editor.setValue(fileData);  // Load content into the editor
-        this.editor.clearSelection();  // Clear any selection after setting content
         document.getElementById('UploadCodeBTN')['value'] = null; // Reset input field
       };
     }
