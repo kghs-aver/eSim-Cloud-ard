@@ -223,6 +223,7 @@ export class SlideSwitch extends CircuitElement {
    */
   constructor(public canvas: any, x: number, y: number) {
     super('SlideSwitch', x, y, 'SlideSwitch.json', canvas);
+    this.setDragListeners();
   }
   /**
    * Initialize Slide Switch
