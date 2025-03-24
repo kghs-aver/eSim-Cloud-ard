@@ -329,7 +329,7 @@ export class Potentiometer extends CircuitElement {
       y: attr.y - this.ty
     });
     // Set the transform origin to center and apply rotation relative to center
-    this.elements[1].transform(`t${this.tx},${this.ty} r${rotationAngle}`); 
+    this.elements[1].transform(`t${this.tx},${this.ty} r${rotationAngle}`);
     this.elements.undrag();
     this.elements.unmousedown();
     this.setClickListener(null);
